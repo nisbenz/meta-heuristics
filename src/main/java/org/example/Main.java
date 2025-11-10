@@ -7,23 +7,28 @@ public class Main {
 
         RandomParkour randomParkour = new RandomParkour();
 
-        for (int i = 0; i < 10000; i++) {
-            randomParkour.RandomSolution();
+//        for (int i = 0; i < 10000; i++) {
+//            randomParkour.RandomSolution();
+//
+//            for (City c : randomParkour.parkour.getParkour()) {
+//                System.out.println(c.name() + " (" + c.lat() + ", " + c.lng() + ")");
+//            }
+//
+//            double totalDistance = Evaluation.TotalDistance(randomParkour.parkour);
+//            System.out.println("\nTotal Distance: " + totalDistance + " km");
+//        }
+        HillClimbParkour p = new HillClimbParkour();
 
-            for (City c : randomParkour.parkour.getParkour()) {
-                System.out.println(c.name() + " (" + c.lat() + ", " + c.lng() + ")");
-            }
+               p.HillClimbSolution();
+               for (City c : p.parkour.getParkour()) {
+                   System.out.println(c.name() + " (" + c.lat() + ", " + c.lng() + ")");
+               }
+               double totalDistance = Evaluation.TotalDistance(p.parkour);
+               System.out.println("\nTotal Distance: " + totalDistance + " km");
 
-            double totalDistance = Evaluation.TotalDistance(randomParkour.parkour);
-            System.out.println("\nTotal Distance: " + totalDistance + " km");
-        }
-        LocalParkour p = new LocalParkour();
-            p.localSolution();
-        for (City c : p.parkour.getParkour()) {
-            System.out.println(c.name() + " (" + c.lat() + ", " + c.lng() + ")");
-        }
-        double totalDistance = Evaluation.TotalDistance(p.parkour);
-        System.out.println("\nTotal Distance: " + totalDistance + " km");
+
+
+
         
 
     }
