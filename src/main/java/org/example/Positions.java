@@ -32,18 +32,7 @@ public class Positions {
         return positions;
     }
 }
-class Parkour {
-    ArrayList<City> travel;
-    Parkour() {
-        travel = new ArrayList<>();
-    }
-    ArrayList<City> getParkour() {
-        return travel;
-    }
-    void setParkour(ArrayList<City> cities){
-        travel = cities;
-    }
-}
+
 class Evaluation{
     double sum = 0;
     Parkour p;

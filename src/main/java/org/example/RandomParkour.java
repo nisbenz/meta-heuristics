@@ -5,14 +5,6 @@ import java.util.Random;
 
 public class RandomParkour extends MetaheuristicSearches {
 
-    RandomParkour(){
-        parkour = new Parkour();
-       parkour.setParkour(pos.getPositions());
-        City c = parkour.getParkour().get(0);
-        City clone = new City(c.name(),c.lat(),c.lng(),c.x_km(),c.y_km());
-        parkour.getParkour().add(clone);
-
-    }
     void RandomSolution() {
         Parkour pk = new Parkour();
         Random random = new Random();
