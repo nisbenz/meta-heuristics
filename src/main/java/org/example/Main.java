@@ -17,11 +17,11 @@ public class Main {
 //            double totalDistance = Evaluation.TotalDistance(randomParkour.parkour);
 //            System.out.println("\nTotal Distance: " + totalDistance + " km");
 //        }
-        HillClimbParkour p = new HillClimbParkour();
+        SimulatedAnnealingParkour p = new SimulatedAnnealingParkour();
 
-               p.HillClimbSolution();
+               p.SimulatedAnnealingSolution();
                for (City c : p.parkour.getParkour()) {
-                   System.out.println(c.name() + " (" + c.lat() + ", " + c.lng() + ")");
+                   System.out.println(c.name() + " (" + c.x_km() + ", " + c.y_km() + ")");
                }
                double totalDistance = Evaluation.TotalDistance(p.parkour);
                System.out.println("\nTotal Distance: " + totalDistance + " km");
