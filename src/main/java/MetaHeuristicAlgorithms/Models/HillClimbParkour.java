@@ -1,9 +1,9 @@
-package org.example;
+package MetaHeuristicAlgorithms.Models;
 
 import java.util.ArrayList;
 
 public class HillClimbParkour extends MetaheuristicSearches {
-    void HillClimbSolution() {
+    public void HillClimbSolution() {
         Parkour pk = new Parkour();
         ArrayList<City> bestRoute = new ArrayList<>(parkour.getParkour());
 

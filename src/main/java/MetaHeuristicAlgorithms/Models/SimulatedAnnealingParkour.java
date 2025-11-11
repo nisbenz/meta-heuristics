@@ -1,10 +1,10 @@
-package org.example;
+package MetaHeuristicAlgorithms.Models;
 
 import java.util.ArrayList;
 
-public class SimulatedAnnealingParkour extends MetaheuristicSearches{
+public class SimulatedAnnealingParkour extends MetaheuristicSearches {
     double Temp = 50000;
-    void SimulatedAnnealingSolution() {
+    public void SimulatedAnnealingSolution() {
         Parkour best = new Parkour();
         best.setParkour(parkour.getParkour()); // Start with the current best route
 

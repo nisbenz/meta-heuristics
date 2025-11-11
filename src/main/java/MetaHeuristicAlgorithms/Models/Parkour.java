@@ -1,4 +1,4 @@
-package org.example;
+package MetaHeuristicAlgorithms.Models;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ public class Parkour {
     Parkour() {
         travel = new ArrayList<>();
     }
-    ArrayList<City> getParkour() {
+    public ArrayList<City> getParkour() {
         return travel;
     }
     void setParkour(ArrayList<City> cities){

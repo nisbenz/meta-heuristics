@@ -1,9 +1,9 @@
-package org.example;
+package MetaHeuristicAlgorithms.Models;
 
 import java.util.ArrayList;
 
 public class LocalParkour extends MetaheuristicSearches {
-    void localSolution() {
+    public void localSolution() {
         Parkour best = new Parkour();
         best.setParkour(parkour.getParkour()); // Start with the current best route
 

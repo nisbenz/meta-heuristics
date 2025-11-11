@@ -1,11 +1,11 @@
-package org.example;
+package MetaHeuristicAlgorithms.Models;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public  class MetaheuristicSearches {
     Positions pos = new Positions();
-    Parkour parkour ;
+    public Parkour parkour ;
     MetaheuristicSearches(){
         parkour = new Parkour();
         parkour.setParkour(pos.getPositions());

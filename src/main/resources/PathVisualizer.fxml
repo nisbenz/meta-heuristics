@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MetaHeuristicAlgorithms.Controllers.PathVisualizerController" prefHeight="700.0" prefWidth="1200.0">
+    <top>
+        <VBox spacing="10" style="-fx-background-color: #f0f0f0; -fx-padding: 15;">
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Label text="Algorithm:" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <ComboBox fx:id="algorithmComboBox" prefWidth="200"/>
+                <Button fx:id="runButton" text="Run Algorithm" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 8 20 8 20; -fx-cursor: hand;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="distanceLabel" text="Total Distance: -- km" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
+            </HBox>
+            <ProgressBar fx:id="progressBar" prefWidth="Infinity" visible="false"/>
+        </VBox>
+    </top>
+    <center>
+        <StackPane style="-fx-background-color: white;">
+            <Canvas fx:id="mapCanvas" width="850" height="600"/>
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+        </StackPane>
+    </center>
+    <right>
+        <VBox spacing="10" style="-fx-background-color: #f9f9f9; -fx-padding: 15;" prefWidth="330">
+            <Label text="Route Details" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <Separator/>
+            <TextArea fx:id="routeTextArea" editable="false" wrapText="false" style="-fx-font-family: 'Courier New'; -fx-font-size: 12px;" VBox.vgrow="ALWAYS"/>
+            <Separator/>
+            <VBox spacing="8">
+                <Label text="Legend:" style="-fx-font-weight: bold;"/>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <Region style="-fx-background-color: red; -fx-pref-width: 12; -fx-pref-height: 12; -fx-background-radius: 6;"/>
+                    <Label text="Cities"/>
+                </HBox>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <Region style="-fx-background-color: green; -fx-border-color: green; -fx-border-width: 2; -fx-pref-width: 12; -fx-pref-height: 12; -fx-background-radius: 6; -fx-border-radius: 6;"/>
+                    <Label text="Start/End City (Algiers)"/>
+                </HBox>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <Region style="-fx-background-color: blue; -fx-pref-width: 30; -fx-pref-height: 2;"/>
+                    <Label text="Route Path"/>
+                </HBox>
+            </VBox>
+            <Separator/>
+            <VBox spacing="5">
+                <Label text="Instructions:" style="-fx-font-weight: bold;"/>
+                <Label text="1. Select an algorithm from dropdown" wrapText="true" style="-fx-font-size: 11px;"/>
+                <Label text="2. Click 'Run Algorithm' button" wrapText="true" style="-fx-font-size: 11px;"/>
+                <Label text="3. View the optimized route on map" wrapText="true" style="-fx-font-size: 11px;"/>
+                <Label text="4. Check route details in this panel" wrapText="true" style="-fx-font-size: 11px;"/>
+            </VBox>
+        </VBox>
+    </right>
+</BorderPane>
