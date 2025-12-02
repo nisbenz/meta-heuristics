@@ -8,14 +8,14 @@ import java.util.Random;
 public class GeneticSearchParkour extends MetaheuristicSearches {
 
     int Gen = 100;
-    double crossoverRate = 0.8;
-    double mutationRate = 0.05;
+    double crossoverRate = 0.25;
+    double mutationRate = 0.1;
     List<MetaheuristicSearches> chromosomes = new ArrayList<>();
 
     public void GeneticSearchSolution() {
         init();
-
         for (int j = 0; j < Gen; j++) {
+
             List<Double> pb = CalculateSelectionProbability(chromosomes);
             ArrayList<Integer> selectedIndices = new ArrayList<>();
             Random rand = new Random();
@@ -34,7 +34,6 @@ public class GeneticSearchParkour extends MetaheuristicSearches {
                 }
                 selectedIndices.add(selected);
             }
-
             List<MetaheuristicSearches> nextGeneration = Crossover(chromosomes, selectedIndices);
             Mutation(nextGeneration);
             chromosomes = nextGeneration;
@@ -43,7 +42,6 @@ public class GeneticSearchParkour extends MetaheuristicSearches {
     }
 
     void init() {
-        chromosomes.clear();
         for (int i = 0; i < 100; i++) {
             RandomParkour g = new RandomParkour();
             Random k = new Random();
@@ -58,7 +56,7 @@ public class GeneticSearchParkour extends MetaheuristicSearches {
 
         for (MetaheuristicSearches chromosome : chromosomes) {
             double dist = Evaluation.TotalDistance(chromosome.parkour);
-            double fitness = 1.0 / (1.0 + dist);
+            double fitness = 1/ (1 + dist);
             sum += fitness;
             probability.add(fitness);
         }
@@ -66,14 +64,12 @@ public class GeneticSearchParkour extends MetaheuristicSearches {
         for (int i = 0; i < probability.size(); i++) {
             probability.set(i, probability.get(i) / sum);
         }
-
         return probability;
     }
 
     List<MetaheuristicSearches> Crossover(List<MetaheuristicSearches> oldPopulation, ArrayList<Integer> selectedIndices) {
         List<MetaheuristicSearches> nextGen = new ArrayList<>();
         Random g = new Random();
-
         for (int i = 0; i < selectedIndices.size(); i += 2) {
             if (i + 1 >= selectedIndices.size()) {
                 nextGen.add(copySolution(oldPopulation.get(selectedIndices.get(i))));
@@ -88,66 +84,17 @@ public class GeneticSearchParkour extends MetaheuristicSearches {
                 ArrayList<City> p2 = parent2.parkour.getParkour();
                 int size = p1.size();
 
-                // Removed: if (size < 4) check - not needed with 20 cities
+                if (size <= 2) {
+                    nextGen.add(copySolution(parent1));
+                    nextGen.add(copySolution(parent2));
+                    continue;
+                }
 
-                int breakPoint = g.nextInt(size - 3) + 2;
+                int breakPoint = g.nextInt(size - 2) + 1;
+
                 City depot = p1.getFirst();
-
-                // === Création Enfant 1 ===
-                MetaheuristicSearches child1 = new RandomParkour();
-                child1.parkour = new Parkour();
-                ArrayList<City> route1 = child1.parkour.getParkour();
-
-                route1.add(depot);
-
-                for (int k = 1; k < breakPoint; k++) {
-                    route1.add(p1.get(k));
-                }
-
-                for (int k = 1; k < size - 1; k++) {
-                    City city = p2.get(k);
-                    boolean exists = false;
-                    for (City c : route1) {
-                        if (c.name().equals(city.name())) {
-                            exists = true;
-                            break;
-                        }
-                    }
-                    if (!exists) {
-                        route1.add(city);
-                    }
-                }
-
-                route1.add(depot);
-                nextGen.add(child1);
-
-                // === Création Enfant 2 ===
-                MetaheuristicSearches child2 = new RandomParkour();
-                child2.parkour = new Parkour();
-                ArrayList<City> route2 = child2.parkour.getParkour();
-
-                route2.add(depot);
-
-                for (int k = 1; k < breakPoint; k++) {
-                    route2.add(p2.get(k));
-                }
-
-                for (int k = 1; k < size - 1; k++) {
-                    City city = p1.get(k);
-                    boolean exists = false;
-                    for (City c : route2) {
-                        if (c.name().equals(city.name())) {
-                            exists = true;
-                            break;
-                        }
-                    }
-                    if (!exists) {
-                        route2.add(city);
-                    }
-                }
-
-                route2.add(depot);
-                nextGen.add(child2);
+                CreateChild(nextGen, p1, p2, size, breakPoint,depot);
+                CreateChild(nextGen, p2, p1, size, breakPoint,depot);
 
             } else {
                 nextGen.add(copySolution(parent1));
@@ -157,8 +104,38 @@ public class GeneticSearchParkour extends MetaheuristicSearches {
         return nextGen;
     }
 
+    private void CreateChild(List<MetaheuristicSearches> nextGen, ArrayList<City> p1, ArrayList<City> p2, int size, int breakPoint, City depot) {
+        MetaheuristicSearches child = new RandomParkour();
+        child.parkour = new Parkour();
+        ArrayList<City> childRoute = child.parkour.getParkour();
+
+        HashSet<City> visitedCities = new HashSet<>();
+
+        for (int k = 0; k <= breakPoint; k++) {
+            City c = p1.get(k);
+            childRoute.add(c);
+            visitedCities.add(c);
+        }
 
 
+        for (int k = 1; k < p2.size()-1; k++) {
+            City c = p2.get(k);
+
+            if (c.equals(depot)) continue;
+
+            if (!visitedCities.contains(c)) {
+                childRoute.add(c);
+                visitedCities.add(c);
+            }
+        }
+
+
+        if (childRoute.size() < p1.size()) {
+            childRoute.add(depot);
+        }
+
+        nextGen.add(child);
+    }
     void Mutation(List<MetaheuristicSearches> population) {
         Random rand = new Random();
 
@@ -167,13 +144,13 @@ public class GeneticSearchParkour extends MetaheuristicSearches {
                 ArrayList<City> route = ind.parkour.getParkour();
                 int size = route.size();
 
-                if (size > 3) {
+                if (size > 2) {
                     int idx1 = rand.nextInt(size - 2) + 1;
                     int idx2 = rand.nextInt(size - 2) + 1;
-
                     City temp = route.get(idx1);
                     route.set(idx1, route.get(idx2));
                     route.set(idx2, temp);
+                } else {
                 }
             }
         }
@@ -188,7 +165,7 @@ public class GeneticSearchParkour extends MetaheuristicSearches {
 
     Parkour getBestScore(List<MetaheuristicSearches> pop) {
         double min = Double.MAX_VALUE;
-        Parkour bestParkour = pop.get(0).parkour;
+        Parkour bestParkour = pop.getFirst().parkour;
 
         for (MetaheuristicSearches s : pop) {
             double d = Evaluation.TotalDistance(s.parkour);

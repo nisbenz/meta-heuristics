@@ -13,4 +13,5 @@ public class Parkour {
     void setParkour(ArrayList<City> cities){
         travel = cities;
     }
+
 }
