@@ -10,33 +10,27 @@ public class LocalParkour extends MetaheuristicSearches {
         ArrayList<City> bestRoute = new ArrayList<>(best.getParkour());
         boolean improved = true;
 
-        while (improved) {
-            improved = false;
 
-            for (int i = 1; i < bestRoute.size() - 2; i++) {
-                for (int j = i + 1; j < bestRoute.size() - 1; j++) {
+        for (int i = 1; i < bestRoute.size() - 2; i++) {
+            for (int j = i + 1; j < bestRoute.size() - 1; j++) {
 
-                    ArrayList<City> newRoute = new ArrayList<>(bestRoute);
-                    reverseSegment(newRoute, i, j);
+                ArrayList<City> newRoute = new ArrayList<>(bestRoute);
+                reverseSegment(newRoute, i, j);
 
-                    Parkour candidate = new Parkour();
-                    candidate.setParkour(newRoute);
+                Parkour candidate = new Parkour();
+                candidate.setParkour(newRoute);
 
-                    Parkour better = Evaluation.TheBestParkour(candidate, best);
+                Parkour better = Evaluation.TheBestParkour(candidate, best);
 
-                    if (better != best) {
-                        best = better;
-                        bestRoute = new ArrayList<>(best.getParkour());
-                        improved = true;
-                    }
+                if (better != best) {
+                    best = better;
+                    bestRoute = new ArrayList<>(best.getParkour());
                 }
             }
         }
 
         parkour = best;
     }
-
-
     private void reverseSegment(ArrayList<City> route, int i, int j) {
         while (i < j) {
             City tmp = route.get(i);

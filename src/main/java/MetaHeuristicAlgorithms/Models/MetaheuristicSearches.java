@@ -2,6 +2,7 @@ package MetaHeuristicAlgorithms.Models;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Collections;
 
 public  class MetaheuristicSearches {
     Positions pos = new Positions();
@@ -9,7 +10,10 @@ public  class MetaheuristicSearches {
     MetaheuristicSearches(){
         parkour = new Parkour();
         parkour.setParkour(pos.getPositions());
-        City c = parkour.getParkour().get(0);
+        City c = parkour.getParkour().getFirst();
+        parkour.getParkour().removeFirst();
+        Collections.shuffle(parkour.getParkour());
+        parkour.getParkour().addFirst(c);
         City clone = new City(c.name(),c.lat(),c.lng(),c.x_km(),c.y_km());
         parkour.getParkour().add(clone);
     }
