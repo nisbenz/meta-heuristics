@@ -32,7 +32,9 @@ public class PathVisualizerController {
                 "Random Search",
                 "Hill Climbing",
                 "Local Search (2-opt)",
-                "Simulated Annealing"
+                "Simulated Annealing",
+                "Tabu Search"
+
         );
         algorithmComboBox.setValue("Simulated Annealing");
 
@@ -59,7 +61,6 @@ public class PathVisualizerController {
         progressBar.setVisible(true);
         routeTextArea.clear();
 
-        // Run algorithm in background thread
         new Thread(() -> {
             String algorithm = algorithmComboBox.getValue();
 
@@ -79,6 +80,10 @@ public class PathVisualizerController {
                 case "Simulated Annealing":
                     currentSearch = new SimulatedAnnealingParkour();
                     ((SimulatedAnnealingParkour) currentSearch).SimulatedAnnealingSolution();
+                    break;
+                case "Tabu Search":
+                    currentSearch = new TabuSearchParkour();
+                    ((TabuSearchParkour) currentSearch).TabuSearchSolution();
                     break;
             }
 
