@@ -70,8 +70,7 @@ public class GeneticSearchParkour extends MetaheuristicSearches {
         return probability;
     }
 
-    List<MetaheuristicSearches> Crossover(List<MetaheuristicSearches> oldPopulation,
-                                          ArrayList<Integer> selectedIndices) {
+    List<MetaheuristicSearches> Crossover(List<MetaheuristicSearches> oldPopulation, ArrayList<Integer> selectedIndices) {
         List<MetaheuristicSearches> nextGen = new ArrayList<>();
         Random g = new Random();
 
@@ -87,78 +86,67 @@ public class GeneticSearchParkour extends MetaheuristicSearches {
             if (g.nextDouble() < crossoverRate) {
                 ArrayList<City> p1 = parent1.parkour.getParkour();
                 ArrayList<City> p2 = parent2.parkour.getParkour();
+                int size = p1.size();
 
-                if (p1.size() < 4 || p2.size() < 4) {
-                    nextGen.add(copySolution(parent1));
-                    nextGen.add(copySolution(parent2));
-                    continue;
-                }
+                // Removed: if (size < 4) check - not needed with 20 cities
 
+                int breakPoint = g.nextInt(size - 3) + 2;
+                City depot = p1.getFirst();
 
-                City depot = p1.get(0);
-
-                int size1 = p1.size();
-                int size2 = p2.size();
-                int minSize = Math.min(size1, size2);
-
-                // Crossover only on middle section (exclude first and last depot)
-                int breakPoint = g.nextInt(minSize - 3) + 2;
-
-                // === Child 1 ===
+                // === Création Enfant 1 ===
                 MetaheuristicSearches child1 = new RandomParkour();
                 child1.parkour = new Parkour();
+                ArrayList<City> route1 = child1.parkour.getParkour();
 
-                // Start with depot
-                child1.parkour.getParkour().add(depot);
+                route1.add(depot);
 
-                HashSet<String> citiesInChild1 = new HashSet<>();
-                citiesInChild1.add(depot.name());
-
-                for (int k = 1; k < breakPoint && k < size1 - 1; k++) {
-                    City city = p1.get(k);
-                    child1.parkour.getParkour().add(city);
-                    citiesInChild1.add(city.name());
+                for (int k = 1; k < breakPoint; k++) {
+                    route1.add(p1.get(k));
                 }
 
-                for (int k = 1; k < size2 - 1; k++) {
+                for (int k = 1; k < size - 1; k++) {
                     City city = p2.get(k);
-                    if (!citiesInChild1.contains(city.name())) {
-                        child1.parkour.getParkour().add(city);
-                        citiesInChild1.add(city.name());
+                    boolean exists = false;
+                    for (City c : route1) {
+                        if (c.name().equals(city.name())) {
+                            exists = true;
+                            break;
+                        }
+                    }
+                    if (!exists) {
+                        route1.add(city);
                     }
                 }
 
-                // End with depot (same as start - HAMILTONIAN CYCLE)
-                child1.parkour.getParkour().add(depot);
+                route1.add(depot);
                 nextGen.add(child1);
 
-                // === Child 2 ===
+                // === Création Enfant 2 ===
                 MetaheuristicSearches child2 = new RandomParkour();
                 child2.parkour = new Parkour();
+                ArrayList<City> route2 = child2.parkour.getParkour();
 
-                // Start with depot
-                child2.parkour.getParkour().add(depot);
+                route2.add(depot);
 
-                HashSet<String> citiesInChild2 = new HashSet<>();
-                citiesInChild2.add(depot.name());
-
-                // Copy middle section from parent2 (up to breakPoint)
-                for (int k = 1; k < breakPoint && k < size2 - 1; k++) {
-                    City city = p2.get(k);
-                    child2.parkour.getParkour().add(city);
-                    citiesInChild2.add(city.name());
+                for (int k = 1; k < breakPoint; k++) {
+                    route2.add(p2.get(k));
                 }
 
-                // Fill remaining from parent1 (only middle cities, no duplicates)
-                for (int k = 1; k < size1 - 1; k++) {
+                for (int k = 1; k < size - 1; k++) {
                     City city = p1.get(k);
-                    if (!citiesInChild2.contains(city.name())) {
-                        child2.parkour.getParkour().add(city);
-                        citiesInChild2.add(city.name());
+                    boolean exists = false;
+                    for (City c : route2) {
+                        if (c.name().equals(city.name())) {
+                            exists = true;
+                            break;
+                        }
+                    }
+                    if (!exists) {
+                        route2.add(city);
                     }
                 }
 
-                child2.parkour.getParkour().add(depot);
+                route2.add(depot);
                 nextGen.add(child2);
 
             } else {
@@ -166,9 +154,10 @@ public class GeneticSearchParkour extends MetaheuristicSearches {
                 nextGen.add(copySolution(parent2));
             }
         }
-
         return nextGen;
     }
+
+
 
     void Mutation(List<MetaheuristicSearches> population) {
         Random rand = new Random();
