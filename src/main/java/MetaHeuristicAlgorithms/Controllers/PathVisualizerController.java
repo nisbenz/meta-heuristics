@@ -33,7 +33,8 @@ public class PathVisualizerController {
                 "Hill Climbing",
                 "Local Search (2-opt)",
                 "Simulated Annealing",
-                "Tabu Search"
+                "Tabu Search",
+                "Genetic Search"
 
         );
         algorithmComboBox.setValue("Simulated Annealing");
@@ -67,7 +68,7 @@ public class PathVisualizerController {
             switch (algorithm) {
                 case "Random Search":
                     currentSearch = new RandomParkour();
-                    ((RandomParkour) currentSearch).RandomSolution();
+                    ((RandomParkour) currentSearch).RandomSolution(10000);
                     break;
                 case "Hill Climbing":
                     currentSearch = new HillClimbParkour();
@@ -84,6 +85,10 @@ public class PathVisualizerController {
                 case "Tabu Search":
                     currentSearch = new TabuSearchParkour();
                     ((TabuSearchParkour) currentSearch).TabuSearchSolution();
+                    break;
+                case "Genetic Search":
+                    currentSearch = new GeneticSearchParkour();
+                    ((GeneticSearchParkour) currentSearch).GeneticSearchSolution();
                     break;
             }
 

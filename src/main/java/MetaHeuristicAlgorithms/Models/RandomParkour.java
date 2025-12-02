@@ -5,14 +5,13 @@ import java.util.Random;
 
 public class RandomParkour extends MetaheuristicSearches {
 
-    public void RandomSolution() {
-        for (int i = 0; i < 10000; i++) {
+    public void RandomSolution(int k) {
+        for (int i = 0; i < k; i++) {
 
 
             Parkour pk = new Parkour();
             Random random = new Random();
             City c = parkour.getParkour().get(0);
-            System.out.println(c.name());
             pk.getParkour().add(c);
             int x = 0;
 
@@ -25,7 +24,6 @@ public class RandomParkour extends MetaheuristicSearches {
             pk.getParkour().add(new City(c.name(), c.lat(), c.lng(), c.x_km(), c.y_km()));
             parkour = Evaluation.TheBestParkour(pk, parkour);
 
-            System.out.println("\nFinal best total distance: " + Evaluation.TotalDistance(parkour));
         }
     }
 }
